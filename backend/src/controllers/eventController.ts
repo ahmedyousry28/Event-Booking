@@ -27,7 +27,7 @@ export const getClosingSoonEvents = async (req: Request, res: Response) => {
 export const getCompletedEvents = async (req: Request, res: Response) => {
   try {
     const events = await Event.find({
-      $and: [{ availableSpots: { $eq: 0 } }, { date: { $gt: new Date() } }],
+      $or: [{ availableSpots: { $eq: 0 } }, { date: { $gt: new Date() } }],
     });
     res.json({ message: "Events fetched successfully", events });
   } catch (error) {

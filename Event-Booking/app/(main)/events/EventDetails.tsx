@@ -187,7 +187,7 @@ export default function SingleEventScreen() {
                 cancel registration
               </CustomText>
             </PrimaryButton>
-          ) : !availableSpots ? (
+          ) : !availableSpots && available === 0 ? (
             <View className=" rounded-xl bg-[#15803d] p-4 mb-4">
               <Text className="text-secondary text-center text-lg px-4 py-1 ">
                 Completed
