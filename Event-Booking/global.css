@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #f76c11;
+    --primary-foreground: #2d3039;
+    --secondary: #ffffff;
+    --secondary-foreground: #757575;
+    --common: #444444;
+    --muted: #9d9a9a;
+    --danger: #ff473e;
+  }
+}
