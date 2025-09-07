@@ -53,9 +53,7 @@ export const registerEvent = async (req: Request, res: Response) => {
       await Event.findByIdAndUpdate(req.params.id, {
         $inc: { availableSpots: 1 },
       });
-      return res
-        .status(200)
-        .json({ message: "Event unregistered successfully" });
+      return res.sendStatus(204);
     } else {
       await User.findByIdAndUpdate(userId, {
         $addToSet: { regEvents: req.params.id },
@@ -86,7 +84,7 @@ export const favouriteEvent = async (req: Request, res: Response) => {
       await User.findByIdAndUpdate(userId, {
         $pull: { favEvents: req.params.id },
       });
-      return res.status(200).json({ message: "Event removed from favourites" });
+      return res.sendStatus(204);
     } else {
       await User.findByIdAndUpdate(userId, {
         $addToSet: { favEvents: req.params.id },
