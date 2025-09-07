@@ -1,6 +1,6 @@
 # 🎉 Event Booking App
 
-> **Note**: I developed a custom backend API instead of using mockAPI to have full control over the data structure and customize it according to the app requirements.
+> **Note**: I developed a custom Node.js backend server instead of using mockAPI to have full control over the data structure and customize it according to the app requirements.
 
 A modern React Native mobile application for browsing and booking events with user authentication and personalized dashboard.
 
@@ -66,16 +66,6 @@ A modern React Native mobile application for browsing and booking events with us
 npm run start
 # or
 npx expo start
-```
-
-### Android
-```bash
-npx react-native run-android
-```
-
-### iOS
-```bash
-npx react-native run-ios
 ```
 
 ## 📱 App Screens
