@@ -30,7 +30,6 @@ export const handleAuth = async ({
         password: inputData.password,
       };
       inputData = dataToSend;
-      console.log(inputData);
     }
     const { data } = await apiClient.post(`/auth/${type}`, inputData);
     const { accessToken, data: userData, message } = data;
