@@ -15,7 +15,7 @@ export default function EventCard({ item }: { item: IEvent }) {
       style={styles.card}
       onPress={() => {
         (navigation as any).navigate("EventDetails", {
-          eventData: JSON.stringify(item),
+          eventId: JSON.stringify(item._id),
         });
       }}
     >

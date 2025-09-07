@@ -21,6 +21,13 @@ export const GetClosingSoonEvents = () => {
   });
   return { data, isLoading, error, refetch };
 };
+export const GetEventDetails = (id: string) => {
+  const { data, isLoading, error, refetch } = useCustomQuery({
+    queryKey: ["events", id],
+    url: `/event/details/${id}`,
+  });
+  return { data, isLoading, error, refetch };
+};
 export const EventRegister = (id: string) => {
   const { data, isLoading, error, refetch } = useCustomQuery({
     queryKey: ["eventRegister"],

@@ -1,11 +1,12 @@
 import PrimaryButton from "@/components/ui/Custombutton";
 import CustomErrorToast from "@/components/ui/CustomErrorToast";
 import CustomText from "@/components/ui/CustomText";
-import { IEvent } from "@/interfaces";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   CheckEventRegister,
   EventFavourite,
   EventRegister,
+  GetEventDetails,
 } from "@/services/events";
 import { formatDate, formatTime } from "@/utils";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,10 +21,26 @@ export default function SingleEventScreen() {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const route = useRoute();
-  const { eventData } = route.params as { eventData: string };
-  const event: IEvent = JSON.parse(eventData);
+  const { eventId } = route.params as { eventId: string };
+  const {
+    data: eventDetails,
+    isLoading: loadingEventDetails,
+    error: errorEventDetails,
+    refetch: refetchEventDetails,
+  } = GetEventDetails(eventId);
+  if (loadingEventDetails) {
+    return <LoadingSpinner />;
+  }
+  if (errorEventDetails || !eventDetails?.event) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-danger">{"failed to load event details"}</Text>
+      </View>
+    );
+  }
   const {
     availableSpots,
+    _id: id,
     price,
     date,
     time,
@@ -33,28 +50,29 @@ export default function SingleEventScreen() {
     image,
     description,
     capacity,
-  } = event;
+  } = eventDetails?.event;
   const {
     data: registrationData,
     isLoading: isEventLoading,
     refetch: refetchIsEventRegistered,
-  } = CheckEventRegister(event._id);
+  } = CheckEventRegister(id);
 
   const favExists = registrationData?.favExists || false;
   const eventExists = registrationData?.eventExists || false;
-  const { refetch } = EventRegister(event._id);
-  const { refetch: refetchEventFavourite } = EventFavourite(event._id);
-  const [available, setAvailable] = useState(availableSpots);
+  const { refetch } = EventRegister(id);
+  const { refetch: refetchEventFavourite } = EventFavourite(id);
+  // const [available, setAvailable] = useState(availableSpots || 0);
   const today = new Date();
   const eventDate = new Date(date);
   const handleFavourite = async () => {
     try {
       const { data } = await refetchEventFavourite();
       await refetchIsEventRegistered();
-      Toast.show({
-        type: "success",
-        text1: data.message,
-      });
+      data.message &&
+        Toast.show({
+          type: "success",
+          text1: data.message,
+        });
     } catch (error) {
       CustomErrorToast(error);
     }
@@ -64,16 +82,20 @@ export default function SingleEventScreen() {
       setIsLoading(true);
       const { data } = await refetch();
       await refetchIsEventRegistered();
+      await refetchEventDetails();
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      Toast.show({
-        type: "success",
-        text1: data.message,
-      });
-      if (eventExists) {
-        setAvailable((prev) => prev + 1);
-      } else {
-        setAvailable((prev) => prev - 1);
-      }
+
+      data.message &&
+        Toast.show({
+          type: "success",
+          text1: data.message,
+        });
+
+      // if (eventExists) {
+      //   setAvailable((prev) => prev + 1);
+      // } else {
+      //   setAvailable((prev) => prev - 1);
+      // }
     } catch (error) {
       console.log(error);
       CustomErrorToast(error);
@@ -84,7 +106,7 @@ export default function SingleEventScreen() {
   return (
     <View className="flex-1 bg-secondary relative pt-4">
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <Image source={{ uri: image }} className="w-full h-64 relative" />
+        <Image source={{ uri: image || "" }} className="w-full h-64 relative" />
         <Ionicons
           name="heart"
           size={30}
@@ -142,7 +164,7 @@ export default function SingleEventScreen() {
             <Text className="text-lg font-bold text-gray-800 mb-3">
               Speakers
             </Text>
-            {speakers.map((speaker: string, index: number) => (
+            {speakers?.map((speaker: string, index: number) => (
               <View key={index} className="flex-row items-center mb-3">
                 <View className="w-10 h-10 bg-gray-200 rounded-full items-center justify-center mr-3">
                   <Ionicons name="person" size={16} color="#666" />
@@ -160,7 +182,7 @@ export default function SingleEventScreen() {
             </View>
             <View className="flex-1 bg-gray-50 rounded-xl p-4 ml-2">
               <Text className="text-2xl font-bold text-green-600 mb-1">
-                {available}
+                {availableSpots}
               </Text>
               <Text className="text-sm text-gray-500">Available Spots</Text>
             </View>
@@ -187,7 +209,7 @@ export default function SingleEventScreen() {
                 cancel registration
               </CustomText>
             </PrimaryButton>
-          ) : !availableSpots && available === 0 ? (
+          ) : !availableSpots ? (
             <View className=" rounded-xl bg-[#15803d] p-4 mb-4">
               <Text className="text-secondary text-center text-lg px-4 py-1 ">
                 Completed

@@ -34,6 +34,18 @@ export const getCompletedEvents = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+export const getEventDetails = async (req: Request, res: Response) => {
+  try {
+    const eventId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      return res.status(400).json({ message: "Invalid event ID" });
+    }
+    const event = await Event.findById(eventId);
+    res.json({ message: "Events fetched successfully", event });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 export const registerEvent = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
