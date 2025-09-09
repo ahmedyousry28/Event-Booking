@@ -37,7 +37,6 @@ export default function SingleEventScreen() {
   const { refetch: refetchEventFavourite } = EventFavourite(ID);
   const { availableSpots, date } = eventDetails?.event || {};
 
-  const [available, setAvailable] = useState(availableSpots);
   if (loadingEventDetails) {
     return <LoadingSpinner />;
   }
@@ -79,12 +78,6 @@ export default function SingleEventScreen() {
           type: "success",
           text1: data.message,
         });
-
-      if (eventExists) {
-        setAvailable((prev: number) => prev + 1);
-      } else {
-        setAvailable((prev: number) => prev - 1);
-      }
     } catch (error) {
       CustomErrorToast(error);
     } finally {
@@ -121,7 +114,7 @@ export default function SingleEventScreen() {
                 cancel registration
               </CustomText>
             </PrimaryButton>
-          ) : !availableSpots && available !== 0 ? (
+          ) : !availableSpots && !eventExists && !isLoading ? (
             <View className=" rounded-xl bg-[#15803d] p-4 mb-4">
               <Text className="text-secondary text-center text-lg px-4 py-1 ">
                 Completed
