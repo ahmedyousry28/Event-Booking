@@ -20,7 +20,7 @@ A modern React Native mobile application for browsing and booking events with us
 | Resource | Link |
 |----------|------|
 | 📺 **Demo Video** | [![Demo Video](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge&logo=youtube)](https://drive.google.com/file/d/1AzlME1zAQJHpxOH_ek6WOVTO7HOIYcM6/view?usp=sharing) |
-| 📱 **Download APK** | [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1h-lnoqXnxVDhZK1oCytN9m0QBgNJhsJo/view?usp=drive_link) |
+| 📱 **Download APK** | [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1TmRmvsayIYQ_KtJVGszPvuf0jYKQJ17X/view?usp=drive_link) |
 | 🔧 **Test Backend** | [![Test API](https://img.shields.io/badge/Test-Backend-blue?style=for-the-badge&logo=postman)](https://event-booking-production.up.railway.app/) |
 
 ## 🛠️ Tech Stack
